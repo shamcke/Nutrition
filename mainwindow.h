@@ -53,6 +53,7 @@ private slots:
     void on_selectedAtTop_clicked();
     void addIngredient(const shared_ptr<const Ingredient>& ing);
     void changeIngredient(const QString& name);
+    void removeIngredient(const QString& name);
     void addIngredientToMeal(const shared_ptr<const MeasuredIngredient>& ing);
     void removeIngredientFromMeal(const QString& name);
     void updateNutrition();

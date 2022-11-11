@@ -31,8 +31,10 @@ public:
     void insert(const QString& name, const shared_ptr<MeasuredIngredient>& ing);
     void insert(const QString& name, const shared_ptr<Ingredient>& ing);
     void edit(const QString& name, uint16_t quantity = 0);
-    void remove(const QString& name);
     const QMap<const QString, shared_ptr<MeasuredIngredient>>& map() const;
+
+public slots:
+    void remove(const QString& name);
 
 signals:
     void ingredientAdded(const shared_ptr<const MeasuredIngredient>&);

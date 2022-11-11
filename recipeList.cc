@@ -39,6 +39,6 @@ void RecipeList::edit(const QString& name, uint16_t quantity)
 
 void RecipeList::remove(const QString& name)
 {
-    m_map.remove(name);
-    emit ingredientRemoved(name);
+    if (m_map.remove(name))
+        emit ingredientRemoved(name);
 }

@@ -30,11 +30,13 @@ public:
     explicit MapOfIngredients(QObject* parent = nullptr);
     void insert(const QString& name, const shared_ptr<Ingredient>& ing);
     void edit(const QString& name, const shared_ptr<Ingredient>& ing);
+    void remove(const QString& name);
     const QMap<const QString, shared_ptr<Ingredient>>& map() const;
 
 signals:
     void ingredientAdded(const shared_ptr<const Ingredient>&);
     void ingredientChanged(const QString& name);
+    void ingredientRemoved(const QString& name);
 
 private:
     QMap<const QString, shared_ptr<Ingredient>> m_map;

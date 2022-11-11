@@ -83,10 +83,20 @@ MainWindow::MainWindow(QWidget* parent)
         ui.nutritionTable->setWidget(i - 1, QFormLayout::FieldRole, lineEdit);
     }
     QObject::connect(
-        m_recipeList.get(),
+        m_mapOfIngredients.get(),
+        SIGNAL(ingredientChanged(const QString&)),
+        this,
+        SLOT(updateNutrition()));
+    QObject::connect(
+        m_mapOfIngredients.get(),
+        SIGNAL(ingredientRemoved(const QString&)),
+        this,
+        SLOT(removeIngredient(const QString&)));
+    QObject::connect(
+        m_mapOfIngredients.get(),
         SIGNAL(ingredientRemoved(const QString&)),
         m_recipeList.get(),
-        SIGNAL(quantityChanged(const QString&)));
+        SLOT(remove(const QString&)));
     QObject::connect(
         m_recipeList.get(),
         SIGNAL(quantityChanged(const QString&, uint16_t)),
@@ -95,13 +105,13 @@ MainWindow::MainWindow(QWidget* parent)
     QObject::connect(
         m_recipeList.get(),
         SIGNAL(ingredientRemoved(const QString&)),
+        m_recipeList.get(),
+        SIGNAL(quantityChanged(const QString&)));
+    QObject::connect(
+        m_recipeList.get(),
+        SIGNAL(ingredientRemoved(const QString&)),
         this,
         SLOT(removeIngredientFromMeal(const QString&)));
-    QObject::connect(
-        m_mapOfIngredients.get(),
-        SIGNAL(ingredientChanged(const QString&)),
-        this,
-        SLOT(updateNutrition()));
 }
 
 MainWindow::~MainWindow()
@@ -162,6 +172,11 @@ void MainWindow::on_editButton_clicked()
 
 void MainWindow::on_deleteButton_clicked()
 {
+    QTableWidgetItem* current = ui.listOfIngredients->currentItem();
+    if (!current)
+        return;
+    QString name = zeroColumn(current)->text();
+    m_mapOfIngredients->remove(name);
 }
 
 void MainWindow::addIngredient(const shared_ptr<const Ingredient>& ing)
@@ -185,8 +200,10 @@ void MainWindow::addIngredient(const shared_ptr<const Ingredient>& ing)
 void MainWindow::changeIngredient(const QString& name)
 {
     const shared_ptr<const Ingredient> ing = m_mapOfIngredients->map().value(name);
-    QList<QTableWidgetItem*> foo = ui.listOfIngredients->findItems(name, Qt::MatchExactly);
-    QTableWidgetItem* ingredient_in_list = foo.at(0);
+    QList<QTableWidgetItem*> list = ui.listOfIngredients->findItems(name, Qt::MatchExactly);
+    if (list.isEmpty())
+        return;
+    QTableWidgetItem* ingredient_in_list = list.at(0);
     for (int col = 0; col < ui.listOfIngredients->columnCount(); col++) {
         QTableWidgetItem* item = neighborItem(ingredient_in_list, col);
         QVariant prop = ing->property(m_ingredientProps->at(col).name());
@@ -195,6 +212,14 @@ void MainWindow::changeIngredient(const QString& name)
         else
             item->setText(prop.toString());
     }
+}
+
+void MainWindow::removeIngredient(const QString& name)
+{
+    QList<QTableWidgetItem*> list = ui.listOfIngredients->findItems(name, Qt::MatchExactly);
+    if (list.isEmpty())
+        return;
+    ui.listOfIngredients->removeRow(list.at(0)->row());
 }
 
 void MainWindow::addIngredientToMeal(const shared_ptr<const MeasuredIngredient>& ing)
@@ -213,11 +238,16 @@ void MainWindow::addIngredientToMeal(const shared_ptr<const MeasuredIngredient>&
 
 void MainWindow::removeIngredientFromMeal(const QString& name)
 {
-    QTableWidgetItem* ingredient_in_list = ui.listOfMeal->findItems(name, Qt::MatchExactly).at(0);
-    ui.listOfMeal->removeRow(ingredient_in_list->row());
-    ingredient_in_list = ui.listOfIngredients->findItems(name, Qt::MatchExactly).at(0);
+    QList<QTableWidgetItem*> list = ui.listOfMeal->findItems(name, Qt::MatchExactly);
+    if (list.isEmpty())
+        return;
+    ui.listOfMeal->removeRow(list.at(0)->row());
+    list = ui.listOfIngredients->findItems(name, Qt::MatchExactly);
+    if (list.isEmpty())
+        return;
+    QTableWidgetItem* ing = list.at(0);
     for (int i = 0; i < ui.listOfIngredients->columnCount(); i++) {
-        neighborItem(ingredient_in_list, i)->setBackground(QBrush(Qt::NoBrush));
+        neighborItem(ing, i)->setBackground(QBrush(Qt::NoBrush));
     }
 }
 

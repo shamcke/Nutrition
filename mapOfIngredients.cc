@@ -28,3 +28,9 @@ void MapOfIngredients::edit(const QString& name, const shared_ptr<Ingredient>& i
     *m_map.value(name) = *ing;
     emit ingredientChanged(name);
 }
+
+void MapOfIngredients::remove(const QString& name)
+{
+    m_map.remove(name);
+    emit ingredientRemoved(name);
+}
