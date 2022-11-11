@@ -176,6 +176,8 @@ void MainWindow::on_deleteButton_clicked()
     if (!current)
         return;
     QString name = zeroColumn(current)->text();
+    if (QMessageBox::question(this, "Delete", "Delete ingredient " + name + "?") == QMessageBox::No)
+        return;
     m_mapOfIngredients->remove(name);
 }
 
