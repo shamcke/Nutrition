@@ -58,6 +58,8 @@ private slots:
     void removeIngredientFromMeal(const QString& name);
     void updateNutrition();
 
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow ui;
     shared_ptr<NewIngredientDialog> m_newDialog = nullptr;

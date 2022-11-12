@@ -285,3 +285,24 @@ void MainWindow::on_selectedAtTop_clicked()
         }
     }
 }
+
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+    if (arg1 == 2) {
+        ui.listOfIngredients->setSortingEnabled(false);
+        int insert_index = 0;
+        for (int i = 0; i < ui.listOfIngredients->rowCount(); i++) {
+            if (m_recipeList->map().contains(ui.listOfIngredients->item(i, 0)->text())) {
+                ui.listOfIngredients->insertRow(insert_index);
+                for (int j = 0; j < ui.listOfIngredients->columnCount(); j++) {
+                    QTableWidgetItem* newItem = new QTableWidgetItem(*ui.listOfIngredients->item(i + 1, j));
+                    ui.listOfIngredients->setItem(insert_index, j, newItem);
+                }
+                insert_index++;
+                ui.listOfIngredients->removeRow(i + 1);
+            }
+        }
+    } else if (arg1 != 2) {
+        ui.listOfIngredients->setSortingEnabled(true);
+    }
+}
