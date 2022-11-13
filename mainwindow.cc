@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #include "mainwindow.h"
+#include "numberItem.h"
 #include <QMessageBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget* parent)
     tofu->setProtein(13);
     shared_ptr<Ingredient> wheat_flour = std::make_shared<Ingredient>("Weizenmehl");
     wheat_flour->setNutrition(349, 1.1, 0.2, 72.0, 1.1, 4.3, 11.0, 0.0);
+    shared_ptr<Ingredient> soy_sauce = std::make_shared<Ingredient>("Soja-Sauce");
+    soy_sauce->setNutrition(87, 0, 0, 9.9, 2.4, 1.8, 11, 15.9);
     const QMetaObject* meta = tofu->metaObject();
     for (int i = meta->propertyOffset(); i < meta->propertyCount(); ++i)
         m_ingredientProps->push_back(meta->property(i));
@@ -64,6 +67,7 @@ MainWindow::MainWindow(QWidget* parent)
         SLOT(addIngredient(const shared_ptr<const Ingredient>&)));
     m_mapOfIngredients->insert(tofu->name(), tofu);
     m_mapOfIngredients->insert(wheat_flour->name(), wheat_flour);
+    m_mapOfIngredients->insert(soy_sauce->name(), soy_sauce);
     QObject::connect(
         m_recipeList.get(),
         SIGNAL(ingredientAdded(const shared_ptr<const MeasuredIngredient>&)),
@@ -186,15 +190,23 @@ void MainWindow::addIngredient(const shared_ptr<const Ingredient>& ing)
     int rows = ui.listOfIngredients->rowCount();
     ui.listOfIngredients->insertRow(rows);
     for (int col = 0; col < ui.listOfIngredients->columnCount(); col++) {
-        QTableWidgetItem* item = new QTableWidgetItem();
-        item->setFlags(Qt::ItemIsEnabled);
-        if (col > 0)
-            item->setTextAlignment(0x0082);
+        QTableWidgetItem* item;
         QVariant prop = ing->property(m_ingredientProps->at(col).name());
-        if (prop.userType() == QMetaType::Float || prop.userType() == QMetaType::Double)
-            item->setText(QString::number(prop.toFloat(), 'g', 2));
-        else
+        int type = prop.userType();
+        if (type == QMetaType::Float || type == QMetaType::Double || type == QMetaType::UShort) {
+            item = new NumberItem;
+            dynamic_cast<NumberItem*>(item)->setValue(prop.toFloat());
+            if (type == QMetaType::UShort) {
+                item->setText(prop.toString());
+            } else {
+                item->setText(QString::number(prop.toFloat(), 'g', 2));
+            }
+            item->setTextAlignment(0x0082);
+        } else {
+            item = new QTableWidgetItem;
             item->setText(prop.toString());
+        }
+        item->setFlags(Qt::ItemIsEnabled);
         ui.listOfIngredients->setItem(rows, col, item);
     }
 }

@@ -16,6 +16,7 @@ SOURCES += \
     mapOfIngredients.cc \
     measuredIngredient.cc \
     newIngredientDialog.cc \
+    numberItem.cc \
     recipeList.cc
 
 HEADERS += \
@@ -25,6 +26,7 @@ HEADERS += \
     mapOfIngredients.h \
     measuredIngredient.h \
     newIngredientDialog.h \
+    numberItem.h \
     recipeList.h
 
 FORMS += \
