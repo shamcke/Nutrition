@@ -141,9 +141,11 @@ void MainWindow::on_listOfMeal_itemChanged(QTableWidgetItem* item)
     uint16_t quantity = item->text().toUInt(ok);
     if (!*ok) {
         item->setText("0");
+        dynamic_cast<NumberItem*>(item)->setValue(0);
         return;
     }
     m_recipeList->edit(zeroColumn(item)->text(), quantity);
+    dynamic_cast<NumberItem*>(item)->setValue(quantity);
 }
 
 void MainWindow::on_listOfMeal_itemActivated(QTableWidgetItem* item)
@@ -243,10 +245,11 @@ void MainWindow::addIngredientToMeal(const shared_ptr<const MeasuredIngredient>&
     added_ingredient->setText(ing->getIngredient()->name());
     ui.listOfMeal->insertRow(0);
     ui.listOfMeal->setItem(0, 0, added_ingredient);
-    QTableWidgetItem* quantity = new QTableWidgetItem();
+    QTableWidgetItem* quantity = new NumberItem();
     quantity->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
     quantity->setTextAlignment(0x0082);
     quantity->setText(QString::number(ing->getQuantity()));
+    dynamic_cast<NumberItem*>(quantity)->setValue(ing->getQuantity());
     ui.listOfMeal->setItem(0, 1, quantity);
 }
 
