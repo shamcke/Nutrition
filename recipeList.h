@@ -32,9 +32,11 @@ public:
     void insert(const QString& name, const shared_ptr<Ingredient>& ing);
     void edit(const QString& name, uint16_t quantity = 0);
     const QMap<const QString, shared_ptr<MeasuredIngredient>>& map() const;
+    uint16_t weight() const;
 
 public slots:
     void remove(const QString& name);
+    void updateWeight();
 
 signals:
     void ingredientAdded(const shared_ptr<const MeasuredIngredient>&);
@@ -43,6 +45,7 @@ signals:
 
 private:
     QMap<const QString, shared_ptr<MeasuredIngredient>> m_map;
+    uint16_t m_weight { 0 };
 };
 
 inline RecipeList::RecipeList(QObject* parent)

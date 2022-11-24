@@ -37,8 +37,21 @@ void RecipeList::edit(const QString& name, uint16_t quantity)
     emit quantityChanged(name, quantity);
 }
 
+uint16_t RecipeList::weight() const
+{
+    return m_weight;
+}
+
 void RecipeList::remove(const QString& name)
 {
     if (m_map.remove(name))
         emit ingredientRemoved(name);
+}
+
+void RecipeList::updateWeight()
+{
+    m_weight = 0;
+    for (const shared_ptr<MeasuredIngredient>& ing : m_map) {
+        m_weight += ing->getQuantity();
+    }
 }

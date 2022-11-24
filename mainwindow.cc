@@ -17,6 +17,7 @@
  */
 #include "mainwindow.h"
 #include "numberItem.h"
+#include <QLocale>
 #include <QMessageBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -104,6 +105,11 @@ MainWindow::MainWindow(QWidget* parent)
     QObject::connect(
         m_recipeList.get(),
         SIGNAL(quantityChanged(const QString&, uint16_t)),
+        m_recipeList.get(),
+        SLOT(updateWeight()));
+    QObject::connect(
+        m_recipeList.get(),
+        SIGNAL(quantityChanged(const QString&, uint16_t)),
         this,
         SLOT(updateNutrition()));
     QObject::connect(
@@ -185,6 +191,41 @@ void MainWindow::on_deleteButton_clicked()
     if (QMessageBox::question(this, "Delete", "Delete ingredient " + name + "?") == QMessageBox::No)
         return;
     m_mapOfIngredients->remove(name);
+}
+
+void MainWindow::on_onTop_stateChanged(int arg1)
+{
+    if (arg1 == 2) {
+        ui.listOfIngredients->setSortingEnabled(false);
+        int insert_index = 0;
+        for (int i = 0; i < ui.listOfIngredients->rowCount(); i++) {
+            if (m_recipeList->map().contains(ui.listOfIngredients->item(i, 0)->text())) {
+                ui.listOfIngredients->insertRow(insert_index);
+                for (int j = 0; j < ui.listOfIngredients->columnCount(); j++) {
+                    QTableWidgetItem* newItem = new QTableWidgetItem(*ui.listOfIngredients->item(i + 1, j));
+                    ui.listOfIngredients->setItem(insert_index, j, newItem);
+                }
+                insert_index++;
+                ui.listOfIngredients->removeRow(i + 1);
+            }
+        }
+    } else if (arg1 != 2) {
+        ui.listOfIngredients->setSortingEnabled(true);
+    }
+}
+
+void MainWindow::on_checkBoxRelative_stateChanged(int arg1)
+{
+    if (arg1 == 2) {
+        for (size_t i = 1; i < m_ingredientProps->size(); i++) {
+            QLineEdit* line_edit = static_cast<QLineEdit*>(
+                ui.nutritionTable->itemAt(i - 1, QFormLayout::FieldRole)->widget());
+            line_edit->setText(QString::number(
+                line_edit->text().toDouble() * 100 / m_recipeList->weight(), 'g', 1));
+        }
+    } else {
+        updateNutrition();
+    }
 }
 
 void MainWindow::addIngredient(const shared_ptr<const Ingredient>& ing)
@@ -282,25 +323,5 @@ void MainWindow::updateNutrition()
         }
         line_edit->setText(QString::number(total));
     }
-}
-
-void MainWindow::on_checkBox_stateChanged(int arg1)
-{
-    if (arg1 == 2) {
-        ui.listOfIngredients->setSortingEnabled(false);
-        int insert_index = 0;
-        for (int i = 0; i < ui.listOfIngredients->rowCount(); i++) {
-            if (m_recipeList->map().contains(ui.listOfIngredients->item(i, 0)->text())) {
-                ui.listOfIngredients->insertRow(insert_index);
-                for (int j = 0; j < ui.listOfIngredients->columnCount(); j++) {
-                    QTableWidgetItem* newItem = new QTableWidgetItem(*ui.listOfIngredients->item(i + 1, j));
-                    ui.listOfIngredients->setItem(insert_index, j, newItem);
-                }
-                insert_index++;
-                ui.listOfIngredients->removeRow(i + 1);
-            }
-        }
-    } else if (arg1 != 2) {
-        ui.listOfIngredients->setSortingEnabled(true);
-    }
+    ui.labelWeight->setText("Total weight: " + QString::number(m_recipeList->weight()));
 }

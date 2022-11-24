@@ -50,13 +50,14 @@ private slots:
     void on_addButton_clicked();
     void on_editButton_clicked();
     void on_deleteButton_clicked();
+    void on_onTop_stateChanged(int arg1);
+    void on_checkBoxRelative_stateChanged(int arg1);
     void addIngredient(const shared_ptr<const Ingredient>& ing);
     void changeIngredient(const QString& name);
     void removeIngredient(const QString& name);
     void addIngredientToMeal(const shared_ptr<const MeasuredIngredient>& ing);
     void removeIngredientFromMeal(const QString& name);
     void updateNutrition();
-    void on_checkBox_stateChanged(int arg1);
 
 private:
     Ui::MainWindow ui;

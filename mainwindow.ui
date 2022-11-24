@@ -47,7 +47,29 @@
        </widget>
       </item>
       <item>
-       <layout class="QFormLayout" name="nutritionTable"/>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QFormLayout" name="nutritionTable"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="labelWeight">
+            <property name="text">
+             <string>Total weight: 0g</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBoxRelative">
+            <property name="text">
+             <string>Per 100g</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -75,7 +97,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="onTop">
         <property name="text">
          <string>On Top</string>
         </property>
