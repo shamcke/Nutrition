@@ -50,6 +50,7 @@ public:
     void setNutrition(unsigned short energy = 0, float fat = 0, float saturated = 0,
         float carbonhydrates = 0, float sugars = 0, float fiber = 0,
         float protein = 0, float salt = 0);
+    bool valid() const;
 
 private:
     const QString m_name;
@@ -61,6 +62,7 @@ private:
     float m_fiber { 0 };
     float m_protein { 0 };
     float m_salt { 0 };
+    bool m_valid { true };
     Q_PROPERTY(QString name READ name);
     Q_PROPERTY(unsigned short energy READ energy WRITE setEnergy);
     Q_PROPERTY(float fat READ fat WRITE setFat);
@@ -70,6 +72,7 @@ private:
     Q_PROPERTY(float fiber READ fiber WRITE setFiber);
     Q_PROPERTY(float protein READ protein WRITE setProtein);
     Q_PROPERTY(float salt READ salt WRITE setSalt);
+    //    Q_PROPERTY(bool valid READ valid);
 };
 
 #endif // INGREDIENT_H

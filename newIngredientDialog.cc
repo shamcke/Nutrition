@@ -55,7 +55,12 @@ void NewIngredientDialog::on_buttonOK_clicked()
             ui.formLayout->itemAt(i, QFormLayout::FieldRole)->widget());
         ing->setProperty(attribute, value_edit->text().toFloat());
     }
+    if (ing->valid() == false) {
+        QMessageBox::critical(this, "Error", "Invalid values");
+        return;
+    }
     m_mapOfIngredients->insert(name, ing);
+
     close();
 }
 

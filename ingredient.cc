@@ -52,7 +52,6 @@ unsigned short Ingredient::energy() const
 
 void Ingredient::setEnergy(unsigned short newEnergy)
 {
-    assert(newEnergy >= 0);
     m_energy = newEnergy;
 }
 
@@ -63,7 +62,9 @@ float Ingredient::fat() const
 
 void Ingredient::setFat(float newFat)
 {
-    assert(newFat >= 0);
+    if (newFat < 0 || newFat > 100) {
+        m_valid = false;
+    }
     m_fat = newFat;
 }
 
@@ -74,7 +75,9 @@ float Ingredient::saturated() const
 
 void Ingredient::setSaturated(float newSaturated)
 {
-    assert(newSaturated >= 0);
+    if (newSaturated < 0 || newSaturated > 100) {
+        m_valid = false;
+    }
     m_saturated = newSaturated;
 }
 
@@ -85,7 +88,9 @@ float Ingredient::carbonhydrates() const
 
 void Ingredient::setCarbonhydrates(float newCarbonhydrates)
 {
-    assert(newCarbonhydrates >= 0);
+    if (newCarbonhydrates < 0 || newCarbonhydrates > 100) {
+        m_valid = false;
+    }
     m_carbonhydrates = newCarbonhydrates;
 }
 
@@ -96,7 +101,9 @@ float Ingredient::sugars() const
 
 void Ingredient::setSugars(float newSugars)
 {
-    assert(newSugars >= 0);
+    if (newSugars < 0 || newSugars > 100) {
+        m_valid = false;
+    }
     m_sugars = newSugars;
 }
 
@@ -107,7 +114,9 @@ float Ingredient::fiber() const
 
 void Ingredient::setFiber(float newFiber)
 {
-    assert(newFiber >= 0);
+    if (newFiber < 0 || newFiber > 100) {
+        m_valid = false;
+    }
     m_fiber = newFiber;
 }
 
@@ -118,7 +127,9 @@ float Ingredient::protein() const
 
 void Ingredient::setProtein(float newProtein)
 {
-    assert(newProtein >= 0);
+    if (newProtein < 0 || newProtein > 100) {
+        m_valid = false;
+    }
     m_protein = newProtein;
 }
 
@@ -129,7 +140,9 @@ float Ingredient::salt() const
 
 void Ingredient::setSalt(float newSalt)
 {
-    assert(newSalt >= 0);
+    if (newSalt < 0 || newSalt > 100) {
+        m_valid = false;
+    }
     m_salt = newSalt;
 }
 
@@ -144,4 +157,9 @@ void Ingredient::setNutrition(unsigned short energy, float fat, float saturated,
     setFiber(fiber);
     setProtein(protein);
     setSalt(salt);
+}
+
+bool Ingredient::valid() const
+{
+    return m_valid;
 }
