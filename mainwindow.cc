@@ -36,6 +36,15 @@ QTableWidgetItem* neighborItem(QTableWidgetItem* item, int i = 0)
     return item->tableWidget()->item(item->row(), i);
 }
 
+QString floatToString(float f)
+{ // Converts a float to a QString with exactly 1 digit after the point
+    int g = round(f * 10);
+    if (g % 10 == 0) {
+        return QString::number(g / 10).append(".0");
+    }
+    return QString::number(g / 10.0);
+}
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
@@ -242,7 +251,7 @@ void MainWindow::addIngredient(const shared_ptr<const Ingredient>& ing)
             if (type == QMetaType::UShort) {
                 item->setText(prop.toString());
             } else {
-                item->setText(QString::number(prop.toFloat(), 'g', 2));
+                item->setText(floatToString(prop.toFloat()));
             }
             item->setTextAlignment(0x0082);
         } else {
@@ -265,7 +274,7 @@ void MainWindow::changeIngredient(const QString& name)
         QTableWidgetItem* item = neighborItem(ingredient_in_list, col);
         QVariant prop = ing->property(m_ingredientProps->at(col).name());
         if (prop.userType() == QMetaType::Float || prop.userType() == QMetaType::Double)
-            item->setText(QString::number(prop.toFloat(), 'g', 2));
+            item->setText(floatToString(prop.toFloat()));
         else
             item->setText(prop.toString());
     }
@@ -321,7 +330,7 @@ void MainWindow::updateNutrition()
             QVariant nutrient = ing->getIngredient()->property(attribute);
             total += quantity * nutrient.value<float>() / 100;
         }
-        line_edit->setText(QString::number(total));
+        line_edit->setText(floatToString(total));
     }
     ui.labelWeight->setText("Total weight: " + QString::number(m_recipeList->weight()));
 }
