@@ -87,14 +87,15 @@ MainWindow::MainWindow(QWidget* parent)
     // Construct the nutrition table for the meal
     for (size_t i = 1; i < m_ingredientProps->size(); i++) {
         const QString& attribute = m_ingredientProps->at(i).name();
-        QLabel* label = new QLabel(ui.centralwidget);
-        label->setObjectName(attribute);
-        label->setText(attribute);
-        ui.nutritionTable->setWidget(i - 1, QFormLayout::LabelRole, label);
-        QLineEdit* lineEdit = new QLineEdit(ui.centralwidget);
-        lineEdit->setObjectName(attribute);
-        lineEdit->setText("0");
-        ui.nutritionTable->setWidget(i - 1, QFormLayout::FieldRole, lineEdit);
+        QLabel* name = new QLabel(ui.centralwidget);
+        name->setObjectName(attribute);
+        name->setText(attribute);
+        ui.nutritionTable->setWidget(i - 1, QFormLayout::LabelRole, name);
+        QLabel* value = new QLabel(ui.centralwidget);
+        value->setObjectName(attribute);
+        value->setText("0");
+        value->setAlignment(Qt::AlignRight);
+        ui.nutritionTable->setWidget(i - 1, QFormLayout::FieldRole, value);
     }
     QObject::connect(
         m_mapOfIngredients.get(),
@@ -223,18 +224,9 @@ void MainWindow::on_onTop_stateChanged(int arg1)
     }
 }
 
-void MainWindow::on_checkBoxRelative_stateChanged(int arg1)
+void MainWindow::on_checkBoxRelative_stateChanged()
 {
-    if (arg1 == 2) {
-        for (size_t i = 1; i < m_ingredientProps->size(); i++) {
-            QLineEdit* line_edit = static_cast<QLineEdit*>(
-                ui.nutritionTable->itemAt(i - 1, QFormLayout::FieldRole)->widget());
-            line_edit->setText(QString::number(
-                line_edit->text().toDouble() * 100 / m_recipeList->weight(), 'g', 1));
-        }
-    } else {
-        updateNutrition();
-    }
+    updateNutrition();
 }
 
 void MainWindow::addIngredient(const shared_ptr<const Ingredient>& ing)
@@ -322,7 +314,7 @@ void MainWindow::updateNutrition()
 {
     for (size_t i = 1; i < m_ingredientProps->size(); i++) {
         const char* attribute = m_ingredientProps->at(i).name();
-        QLineEdit* line_edit = static_cast<QLineEdit*>(
+        QLabel* value = static_cast<QLabel*>(
             ui.nutritionTable->itemAt(i - 1, QFormLayout::FieldRole)->widget());
         float total = 0;
         for (const shared_ptr<MeasuredIngredient>& ing : m_recipeList->map()) {
@@ -330,7 +322,10 @@ void MainWindow::updateNutrition()
             QVariant nutrient = ing->getIngredient()->property(attribute);
             total += quantity * nutrient.value<float>() / 100;
         }
-        line_edit->setText(floatToString(total));
+        if (ui.checkBoxRelative->isChecked()) {
+            total = total * 100 / m_recipeList->weight();
+        }
+        value->setText(floatToString(total));
     }
     ui.labelWeight->setText("Total weight: " + QString::number(m_recipeList->weight()));
 }

@@ -51,7 +51,7 @@ private slots:
     void on_editButton_clicked();
     void on_deleteButton_clicked();
     void on_onTop_stateChanged(int arg1);
-    void on_checkBoxRelative_stateChanged(int arg1);
+    void on_checkBoxRelative_stateChanged();
     void addIngredient(const shared_ptr<const Ingredient>& ing);
     void changeIngredient(const QString& name);
     void removeIngredient(const QString& name);
