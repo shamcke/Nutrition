@@ -212,7 +212,14 @@ void MainWindow::on_onTop_stateChanged(int arg1)
             if (m_recipeList->map().contains(ui.listOfIngredients->item(i, 0)->text())) {
                 ui.listOfIngredients->insertRow(insert_index);
                 for (int j = 0; j < ui.listOfIngredients->columnCount(); j++) {
-                    QTableWidgetItem* newItem = new QTableWidgetItem(*ui.listOfIngredients->item(i + 1, j));
+                    QTableWidgetItem* newItem;
+                    QTableWidgetItem* source = ui.listOfIngredients->item(i + 1, j);
+                    NumberItem* source_as_number_item = dynamic_cast<NumberItem*>(source);
+                    if (source_as_number_item) {
+                        newItem = new NumberItem(*source_as_number_item);
+                    } else {
+                        newItem = new QTableWidgetItem(*source);
+                    }
                     ui.listOfIngredients->setItem(insert_index, j, newItem);
                 }
                 insert_index++;
