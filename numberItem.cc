@@ -32,12 +32,12 @@ bool NumberItem::operator<(const QTableWidgetItem& other) const
     }
 }
 
-float NumberItem::getValue() const
+double NumberItem::getValue() const
 {
     return value;
 }
 
-void NumberItem::setValue(float newValue)
+void NumberItem::setValue(double newValue)
 {
     value = newValue;
 }

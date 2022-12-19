@@ -55,12 +55,12 @@ void Ingredient::setEnergy(unsigned short newEnergy)
     m_energy = newEnergy;
 }
 
-float Ingredient::fat() const
+double Ingredient::fat() const
 {
     return m_fat;
 }
 
-void Ingredient::setFat(float newFat)
+void Ingredient::setFat(double newFat)
 {
     if (newFat < 0 || newFat > 100) {
         m_valid = false;
@@ -68,12 +68,12 @@ void Ingredient::setFat(float newFat)
     m_fat = newFat;
 }
 
-float Ingredient::saturated() const
+double Ingredient::saturated() const
 {
     return m_saturated;
 }
 
-void Ingredient::setSaturated(float newSaturated)
+void Ingredient::setSaturated(double newSaturated)
 {
     if (newSaturated < 0 || newSaturated > 100) {
         m_valid = false;
@@ -81,12 +81,12 @@ void Ingredient::setSaturated(float newSaturated)
     m_saturated = newSaturated;
 }
 
-float Ingredient::carbonhydrates() const
+double Ingredient::carbonhydrates() const
 {
     return m_carbonhydrates;
 }
 
-void Ingredient::setCarbonhydrates(float newCarbonhydrates)
+void Ingredient::setCarbonhydrates(double newCarbonhydrates)
 {
     if (newCarbonhydrates < 0 || newCarbonhydrates > 100) {
         m_valid = false;
@@ -94,12 +94,12 @@ void Ingredient::setCarbonhydrates(float newCarbonhydrates)
     m_carbonhydrates = newCarbonhydrates;
 }
 
-float Ingredient::sugars() const
+double Ingredient::sugars() const
 {
     return m_sugars;
 }
 
-void Ingredient::setSugars(float newSugars)
+void Ingredient::setSugars(double newSugars)
 {
     if (newSugars < 0 || newSugars > 100) {
         m_valid = false;
@@ -107,12 +107,12 @@ void Ingredient::setSugars(float newSugars)
     m_sugars = newSugars;
 }
 
-float Ingredient::fiber() const
+double Ingredient::fiber() const
 {
     return m_fiber;
 }
 
-void Ingredient::setFiber(float newFiber)
+void Ingredient::setFiber(double newFiber)
 {
     if (newFiber < 0 || newFiber > 100) {
         m_valid = false;
@@ -120,12 +120,12 @@ void Ingredient::setFiber(float newFiber)
     m_fiber = newFiber;
 }
 
-float Ingredient::protein() const
+double Ingredient::protein() const
 {
     return m_protein;
 }
 
-void Ingredient::setProtein(float newProtein)
+void Ingredient::setProtein(double newProtein)
 {
     if (newProtein < 0 || newProtein > 100) {
         m_valid = false;
@@ -133,12 +133,12 @@ void Ingredient::setProtein(float newProtein)
     m_protein = newProtein;
 }
 
-float Ingredient::salt() const
+double Ingredient::salt() const
 {
     return m_salt;
 }
 
-void Ingredient::setSalt(float newSalt)
+void Ingredient::setSalt(double newSalt)
 {
     if (newSalt < 0 || newSalt > 100) {
         m_valid = false;
@@ -146,8 +146,8 @@ void Ingredient::setSalt(float newSalt)
     m_salt = newSalt;
 }
 
-void Ingredient::setNutrition(unsigned short energy, float fat, float saturated,
-    float carbonhydrates, float sugars, float fiber, float protein, float salt)
+void Ingredient::setNutrition(unsigned short energy, double fat, double saturated,
+    double carbonhydrates, double sugars, double fiber, double protein, double salt)
 {
     setEnergy(energy);
     setFat(fat);

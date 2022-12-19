@@ -48,7 +48,7 @@ EditDialog::EditDialog(const shared_ptr<const vector<QMetaProperty>>& props,
             + attribute.sliced(1, attribute.size() - 1));
         ui.formLayout->setWidget(i, QFormLayout::FieldRole, lineEdit);
         QVariant prop = m_ingredient->property(attribute.toStdString().c_str());
-        lineEdit->setText(QString::number(prop.value<float>()));
+        lineEdit->setText(QString::number(prop.value<double>()));
     }
 }
 

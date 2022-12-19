@@ -24,11 +24,11 @@ class NumberItem : public QTableWidgetItem {
 public:
     NumberItem();
     virtual bool operator<(const QTableWidgetItem& other) const override;
-    float getValue() const;
-    void setValue(float newValue);
+    double getValue() const;
+    void setValue(double newValue);
 
 private:
-    float value;
+    double value;
 };
 
 #endif // NUMBERITEM_H

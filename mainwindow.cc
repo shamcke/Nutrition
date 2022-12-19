@@ -36,8 +36,8 @@ QTableWidgetItem* neighborItem(QTableWidgetItem* item, int i = 0)
     return item->tableWidget()->item(item->row(), i);
 }
 
-QString floatToString(float f)
-{ // Converts a float to a QString with exactly 1 digit after the point
+QString floatToString(double f)
+{ // Converts a double to a QString with exactly 1 digit after the point
     int g = round(f * 10);
     if (g % 10 == 0) {
         return QString::number(g / 10).append(".0");
@@ -323,11 +323,11 @@ void MainWindow::updateNutrition()
         const char* attribute = m_ingredientProps->at(i).name();
         QLabel* value = static_cast<QLabel*>(
             ui.nutritionTable->itemAt(i - 1, QFormLayout::FieldRole)->widget());
-        float total = 0;
+        double total = 0;
         for (const shared_ptr<MeasuredIngredient>& ing : m_recipeList->map()) {
             uint16_t quantity = ing->getQuantity();
             QVariant nutrient = ing->getIngredient()->property(attribute);
-            total += quantity * nutrient.value<float>() / 100;
+            total += quantity * nutrient.value<double>() / 100;
         }
         if (ui.checkBoxRelative->isChecked()) {
             total = total * 100 / m_recipeList->weight();

@@ -33,45 +33,45 @@ public:
     const QString& name() const;
     unsigned short energy() const;
     void setEnergy(unsigned short newEnergy);
-    float fat() const;
-    void setFat(float newFat);
-    float saturated() const;
-    void setSaturated(float newSaturated);
-    float carbonhydrates() const;
-    void setCarbonhydrates(float newCarbonhydrates);
-    float sugars() const;
-    void setSugars(float newSugars);
-    float fiber() const;
-    void setFiber(float newFiber);
-    float protein() const;
-    void setProtein(float newProtein);
-    float salt() const;
-    void setSalt(float newSalt);
-    void setNutrition(unsigned short energy = 0, float fat = 0, float saturated = 0,
-        float carbonhydrates = 0, float sugars = 0, float fiber = 0,
-        float protein = 0, float salt = 0);
+    double fat() const;
+    void setFat(double newFat);
+    double saturated() const;
+    void setSaturated(double newSaturated);
+    double carbonhydrates() const;
+    void setCarbonhydrates(double newCarbonhydrates);
+    double sugars() const;
+    void setSugars(double newSugars);
+    double fiber() const;
+    void setFiber(double newFiber);
+    double protein() const;
+    void setProtein(double newProtein);
+    double salt() const;
+    void setSalt(double newSalt);
+    void setNutrition(unsigned short energy = 0, double fat = 0, double saturated = 0,
+        double carbonhydrates = 0, double sugars = 0, double fiber = 0,
+        double protein = 0, double salt = 0);
     bool valid() const;
 
 private:
     const QString m_name;
     unsigned short m_energy { 0 };
-    float m_fat { 0 };
-    float m_saturated { 0 };
-    float m_carbonhydrates { 0 };
-    float m_sugars { 0 };
-    float m_fiber { 0 };
-    float m_protein { 0 };
-    float m_salt { 0 };
+    double m_fat { 0 };
+    double m_saturated { 0 };
+    double m_carbonhydrates { 0 };
+    double m_sugars { 0 };
+    double m_fiber { 0 };
+    double m_protein { 0 };
+    double m_salt { 0 };
     bool m_valid { true };
     Q_PROPERTY(QString name READ name);
     Q_PROPERTY(unsigned short energy READ energy WRITE setEnergy);
-    Q_PROPERTY(float fat READ fat WRITE setFat);
-    Q_PROPERTY(float saturated READ saturated WRITE setSaturated);
-    Q_PROPERTY(float carbonhydrates READ carbonhydrates WRITE setCarbonhydrates);
-    Q_PROPERTY(float sugars READ sugars WRITE setSugars);
-    Q_PROPERTY(float fiber READ fiber WRITE setFiber);
-    Q_PROPERTY(float protein READ protein WRITE setProtein);
-    Q_PROPERTY(float salt READ salt WRITE setSalt);
+    Q_PROPERTY(double fat READ fat WRITE setFat);
+    Q_PROPERTY(double saturated READ saturated WRITE setSaturated);
+    Q_PROPERTY(double carbonhydrates READ carbonhydrates WRITE setCarbonhydrates);
+    Q_PROPERTY(double sugars READ sugars WRITE setSugars);
+    Q_PROPERTY(double fiber READ fiber WRITE setFiber);
+    Q_PROPERTY(double protein READ protein WRITE setProtein);
+    Q_PROPERTY(double salt READ salt WRITE setSalt);
     //    Q_PROPERTY(bool valid READ valid);
 };
 
